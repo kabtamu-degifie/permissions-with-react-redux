@@ -14,7 +14,8 @@ const all = async (req, res) => {
 
 const create = async (req, res) => {
   const validation = validateUser(req.body);
-  if (validation.error) return res.send(validation.error.details[0].message);
+  if (validation.error)
+    return res.status(400).send(validation.error.details[0].message);
 
   let user = await User.findOne().or([
     {
@@ -27,10 +28,14 @@ const create = async (req, res) => {
 
   if (user) {
     if (req.body.username === user?.username) {
-      return res.send(`The username '${req.body.username}' has already taken.`);
+      return res
+        .status(400)
+        .send(`The username '${req.body.username}' has already taken.`);
     }
     if (req.body.email === user?.email) {
-      return res.send(`The email '${req.body.email}' has already taken.`);
+      return res
+        .status(400)
+        .send(`The email '${req.body.email}' has already taken.`);
     }
   }
 
@@ -63,10 +68,14 @@ const update = async (req, res) => {
 
   if (otherUser) {
     if (otherUser.username === req.body.username) {
-      return res.send(`The username '${req.body.username}' has already taken.`);
+      return res
+        .status(400)
+        .send(`The username '${req.body.username}' has already taken.`);
     }
     if (otherUser.email === req.body.email) {
-      return res.send(`The email '${req.body.email}' has already taken.`);
+      return res
+        .status(400)
+        .send(`The email '${req.body.email}' has already taken.`);
     }
   }
 
