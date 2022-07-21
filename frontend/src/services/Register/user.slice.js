@@ -16,6 +16,7 @@ export const register = createAsyncThunk(
     try {
       return await userService.register(user);
     } catch (error) {
+      console.log(error);
       const message =
         (error.response &&
           error.response.data &&
@@ -46,6 +47,8 @@ const slice = createSlice({
       .addCase(register.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
+        state.isError = false;
+        state.message = null;
         state.user = action.payload;
       })
       .addCase(register.rejected, (state, action) => {

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import Textbox from "../../components/form/Textbox";
-import { MdAppRegistration } from "react-icons/md";
+import { FaUser } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { register, reset } from "../../services/Register/user.slice";
@@ -31,22 +31,18 @@ function Register() {
   const handleSubmit = (values) => {
     const { username, email, password } = values;
     dispatch(register({ username, email, password }));
-    dispatch(reset());
   };
 
   const { user, isLoading, isSuccess, isError, message } = useSelector(
-    (state) => state
+    (state) => state.user
   );
 
   useEffect(() => {
-    if (isError) {
-      console.log(message);
-    }
-
     if (isSuccess && user) {
+      dispatch(reset());
       navigate("/");
     }
-  }, [user, isLoading, isSuccess, isError, message, navigate]);
+  }, [user, isLoading, isSuccess, isError, message, navigate, dispatch]);
 
   return (
     <Formik
@@ -57,8 +53,10 @@ function Register() {
       <Form>
         <div className="grid grid-cols-1 items-center gap-2">
           <h1 className="inline-flex justify-center font-semibold text-3xl text-center">
-            <MdAppRegistration className="mr-2" /> Register new user
+            <FaUser className="mr-2" /> Register new user
           </h1>
+
+          {isError ? <p className="text-red-600">{message}</p> : null}
 
           <Textbox
             type="text"
@@ -90,6 +88,7 @@ function Register() {
           <button
             type="submit"
             className="text-white bg-indigo-700 p-2 rounded-md"
+            disabled={isLoading}
           >
             Register
           </button>
