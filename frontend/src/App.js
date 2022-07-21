@@ -1,6 +1,5 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-
 import NavBar from "./components/Navbar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -13,7 +12,7 @@ function App() {
       <header>
         <NavBar />
       </header>
-      <main className="max-w-7xl mx-auto px-4 py-2">
+      <main className="max-w-full flex justify-center px-4 py-2">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
