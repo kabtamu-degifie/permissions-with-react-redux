@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import Textbox from "../../components/form/Textbox";
 import { MdAppRegistration } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { register, reset } from "../../services/Register/user.slice";
 
 function Register() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const initialValues = {
     username: "",
     email: "",
@@ -23,8 +29,24 @@ function Register() {
   });
 
   const handleSubmit = (values) => {
-    console.log(values);
+    const { username, email, password } = values;
+    dispatch(register({ username, email, password }));
+    dispatch(reset());
   };
+
+  const { user, isLoading, isSuccess, isError, message } = useSelector(
+    (state) => state
+  );
+
+  useEffect(() => {
+    if (isError) {
+      console.log(message);
+    }
+
+    if (isSuccess && user) {
+      navigate("/");
+    }
+  }, [user, isLoading, isSuccess, isError, message, navigate]);
 
   return (
     <Formik
