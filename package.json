@@ -15,5 +15,10 @@
   "devDependencies": {
     "concurrently": "^7.3.0",
     "nodemon": "^2.0.19"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "react-icons": "^4.4.0",
+    "react-router-dom": "^6.3.0"
   }
 }
