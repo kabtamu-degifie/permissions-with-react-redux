@@ -5,7 +5,7 @@ import Textbox from "../../components/form/Textbox";
 import { FaUser } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { register, reset } from "../../services/Register/user.slice";
+import { register, reset } from "../../services/Auth/user.slice";
 
 function Register() {
   const dispatch = useDispatch();
@@ -56,7 +56,9 @@ function Register() {
             <FaUser className="mr-2" /> Register new user
           </h1>
 
-          {isError ? <p className="text-red-600">{message}</p> : null}
+          {isError ? (
+            <p className="text-red-600 text-center">{message}</p>
+          ) : null}
 
           <Textbox
             type="text"

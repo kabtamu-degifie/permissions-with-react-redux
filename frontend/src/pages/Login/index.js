@@ -1,30 +1,40 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import Textbox from "../../components/form/Textbox";
 import { FaSignInAlt } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { login, reset } from "../../services/Auth/user.slice";
 
 function Login() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const initialValues = {
-    username: "",
     email: "",
     password: "",
-    repeatPassword: "",
   };
 
   const validationSchema = Yup.object({
-    username: Yup.string().required().label("Username"),
     email: Yup.string().email().required().label("Email"),
     password: Yup.string().required().label("Password"),
-    repeatPassword: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Passwords must match")
-      .required()
-      .label("Repeat Password"),
   });
 
   const handleSubmit = (values) => {
-    console.log(values);
+    const { email, password } = values;
+    dispatch(login({ email, password }));
   };
+
+  const { user, isLoading, isSuccess, isError, message } = useSelector(
+    (state) => state.user
+  );
+
+  useEffect(() => {
+    if (isSuccess && user) {
+      dispatch(reset());
+      navigate("/role");
+    }
+  }, [user, isLoading, isSuccess, isError, message, navigate, dispatch]);
 
   return (
     <Formik
@@ -34,9 +44,13 @@ function Login() {
     >
       <Form>
         <div className="grid grid-cols-1 items-center gap-2">
-          <h1 className="inline-flex justify-center font-semibold text-3xl text-center">
+          <h1 className="inline-flex justify-center items-center font-semibold text-3xl text-center">
             <FaSignInAlt className="mr-2" /> Login
           </h1>
+
+          {isError ? (
+            <p className="text-red-600 text-center">{message}</p>
+          ) : null}
 
           <Textbox
             type="email"
