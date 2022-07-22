@@ -15,7 +15,7 @@ const login = async (req, res) => {
     ])
     .populate({ path: "roles", populate: { path: "permissions" } });
 
-  if (user && user.verifyPassword(req.body.password)) {
+  if (user && (await user.verifyPassword(req.body.password))) {
     // Maping roles => find permissions inside role => combine them and form set
     let permissions = user.roles.reduce((previousRole, currentRole) => {
       return [
