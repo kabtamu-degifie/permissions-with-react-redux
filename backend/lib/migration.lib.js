@@ -2,7 +2,7 @@ const logger = require("../config/logger");
 
 const { User } = require("../models/user");
 const Role = require("../models/role");
-const Permission = require("../models/permission");
+const { Permission } = require("../models/permission");
 
 const { permissions, roles, users } = require("../config/migrations");
 

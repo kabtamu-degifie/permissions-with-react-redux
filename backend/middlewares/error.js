@@ -1,11 +1,10 @@
 module.exports = (error, req, res, next) => {
   if (error.name === "UnauthorizedError") {
     res.status(401).send(error.message);
-  }
-
-  if (error.name === "CastError" && error.kind === "ObjectId") {
+  } else if (error.name === "CastError" && error.kind === "ObjectId") {
     res.status(401).send("Invalid ObjectId format.");
+  } else {
+    console.log(error);
+    res.status(500).send("Something went wrong!");
   }
-
-  res.status(500).send("Something went wrong!");
 };
