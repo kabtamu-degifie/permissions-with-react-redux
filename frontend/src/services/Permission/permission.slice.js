@@ -32,7 +32,6 @@ const slice = createSlice({
   initialState,
   reducers: {
     reset: (state) => {
-      state.permissions = null;
       state.isSuccess = false;
       state.isError = false;
       state.isLoading = false;

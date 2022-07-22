@@ -7,7 +7,7 @@ const get = async (req, res) => {
 };
 
 const all = async (req, res) => {
-  const roles = await Role.find();
+  const roles = await Role.find().populate("permissions");
   res.status(200).send(roles);
 };
 
