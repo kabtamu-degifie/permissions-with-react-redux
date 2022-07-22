@@ -16,7 +16,6 @@ export const register = createAsyncThunk(
     try {
       return await userService.register(user);
     } catch (error) {
-      console.log(error);
       const message =
         (error.response &&
           error.response.data &&

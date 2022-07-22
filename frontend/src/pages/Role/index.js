@@ -1,7 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { MdAdd } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import { fetch } from "../../services/Permission/permission.slice";
 
 function Role() {
+  const dispatch = useDispatch();
+  const { permissions } = useSelector((state) => state.permissions);
+
+  useEffect(() => {
+    dispatch(fetch());
+  }, [dispatch]);
+
+  console.log(permissions);
+
   return (
     <div className="grid grid-rows-2 gap-2 w-full ml-12 mr-12 border-gray-200 border-2 p-3 rounded-lg">
       <div className="border-gray-200 border-2 p-3 rounded-lg">
