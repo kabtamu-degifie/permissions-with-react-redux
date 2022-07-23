@@ -175,15 +175,13 @@ function Role() {
     }
   };
 
-  console.log("okay");
-
   return (
     <div className="flex flex-col gap-3  w-full ml-12 mr-12 content-start border-gray-200 border-2 p-3 rounded-lg">
       <div className="border-gray-200 border-2 p-3 rounded-lg bg-slate-100 h-16">
-        {rLoading || !roles ? (
-          <p>Loading...</p>
-        ) : (
-          <div className="flex justify-between">
+        <div className="flex justify-between">
+          {rLoading || !roles ? (
+            <div>Loading...</div>
+          ) : (
             <div className="flex justify-start items-center gap-6">
               <select
                 onChange={selectRoleHandler}
@@ -198,21 +196,22 @@ function Role() {
               </select>
               <div className="capitalize">{selectedRole.name}</div>
             </div>
-            <div>
-              <button
-                type="button"
-                className="inline-flex items-center  text-white bg-indigo-600 hover:bg-indigo-700 p-2 pr-4 pl-4 rounded-md"
-              >
-                <MdAdd className="mr-2" />
-                Add Role
-              </button>
-            </div>
+          )}
+
+          <div>
+            <button
+              type="button"
+              className="inline-flex items-center  text-white bg-indigo-600 hover:bg-indigo-700 p-2 pr-4 pl-4 rounded-md"
+            >
+              <MdAdd className="mr-2" />
+              Add Role
+            </button>
           </div>
-        )}
+        </div>
       </div>
 
       {pLoading || !permissions || !selectedRole?.permissions ? (
-        <div>Loading...</div>
+        <div className="text-center">Loading...</div>
       ) : (
         <div className="table w-full border-spacing-y-4 p-3 border-2 border-slate-200 rounded-lg">
           <div className="table-header-group ">
