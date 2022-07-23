@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { MdAdd } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { fetch as fetchPermissions } from "../../services/Permission/permission.slice";
+import {
+  fetch as fetchPermissions,
+  reset as pReset,
+} from "../../services/Permission/permission.slice";
 import {
   fetch as fetchRoles,
   reset as rReset,
@@ -55,6 +58,10 @@ function Role() {
         setSelectedRoleId(roles[0]._id);
       }
       dispatch(rReset());
+    }
+
+    if (pSuccess || permissions) {
+      dispatch(pReset());
     }
   }, [dispatch, pSuccess, permissions, rSuccess, roles, selectedRoleId]);
 
@@ -150,6 +157,26 @@ function Role() {
     setSelectedRole((prv) => ({ ...prv, permissions: selectedRolePerms }));
   };
 
+  // set select all permissions checkbox
+  const setHeaderCheckboxStatus = (inputRef, permType) => {
+    const srp = selectedRole.permissions.filter((sp) =>
+      sp.name.includes(permType)
+    ).length;
+    const dp = permissions.filter((p) => p.name.includes(permType)).length;
+
+    if (srp === dp) {
+      inputRef.checked = true;
+      inputRef.indeterminate = false;
+    } else if (srp > 0) {
+      inputRef.indeterminate = true;
+    } else {
+      inputRef.checked = false;
+      inputRef.indeterminate = false;
+    }
+  };
+
+  console.log("okay");
+
   return (
     <div className="flex flex-col gap-3  w-full ml-12 mr-12 content-start border-gray-200 border-2 p-3 rounded-lg">
       <div className="border-gray-200 border-2 p-3 rounded-lg bg-slate-100 h-16">
@@ -184,55 +211,67 @@ function Role() {
         )}
       </div>
 
-      <div className="table w-full border-spacing-y-4 p-3 border-2 border-slate-200 rounded-lg">
-        <div className="table-header-group ">
-          <div className="table-row">
-            <div className="table-cell p-2 text-center border-collapse border-b-2 border-slate-100">
-              Module
-            </div>
-            <div className="table-cell text-left border-collapse border-b-2 border-slate-100">
-              <input
-                type="checkbox"
-                className="h-4 w-4 mr-2 accent-indigo-600"
-                onChange={(e) => checkAllHandler(e, permissions, "view")}
-                id="view"
-              />
-              <label htmlFor="view">View</label>
-            </div>
-            <div className="table-cell text-left border-collapse border-b-2 border-slate-100">
-              <input
-                type="checkbox"
-                className="h-4 w-4 mr-2 accent-indigo-600"
-                onChange={(e) => checkAllHandler(e, permissions, "create")}
-                id="create"
-              />
-              <label htmlFor="create">Create</label>
-            </div>
-            <div className="table-cell text-left border-collapse border-b-2 border-slate-100">
-              <input
-                type="checkbox"
-                className="h-4 w-4 mr-2 accent-indigo-600"
-                onChange={(e) => checkAllHandler(e, permissions, "update")}
-                id="update"
-              />
-              <label htmlFor="update">Update</label>
-            </div>
-            <div className="table-cell text-left border-collapse border-b-2 border-slate-100">
-              <input
-                type="checkbox"
-                className="h-4 w-4 mr-2 accent-indigo-600"
-                onChange={(e) => checkAllHandler(e, permissions, "remove")}
-                id="remove"
-              />
-              <label htmlFor="remove">Remove</label>
+      {pLoading || !permissions || !selectedRole?.permissions ? (
+        <div>Loading...</div>
+      ) : (
+        <div className="table w-full border-spacing-y-4 p-3 border-2 border-slate-200 rounded-lg">
+          <div className="table-header-group ">
+            <div className="table-row">
+              <div className="table-cell p-2 text-center border-collapse border-b-2 border-slate-100">
+                Module
+              </div>
+              <div className="table-cell text-left border-collapse border-b-2 border-slate-100">
+                <input
+                  type="checkbox"
+                  className="h-4 w-4 mr-2 accent-indigo-600"
+                  onChange={(e) => checkAllHandler(e, permissions, "view")}
+                  id="view"
+                  ref={(input) => {
+                    if (input) setHeaderCheckboxStatus(input, "view");
+                  }}
+                />
+                <label htmlFor="view">View</label>
+              </div>
+              <div className="table-cell text-left border-collapse border-b-2 border-slate-100">
+                <input
+                  type="checkbox"
+                  className="h-4 w-4 mr-2 accent-indigo-600"
+                  onChange={(e) => checkAllHandler(e, permissions, "create")}
+                  id="create"
+                  ref={(input) => {
+                    if (input) setHeaderCheckboxStatus(input, "create");
+                  }}
+                />
+                <label htmlFor="create">Create</label>
+              </div>
+              <div className="table-cell text-left border-collapse border-b-2 border-slate-100">
+                <input
+                  type="checkbox"
+                  className="h-4 w-4 mr-2 accent-indigo-600"
+                  onChange={(e) => checkAllHandler(e, permissions, "update")}
+                  id="update"
+                  ref={(input) => {
+                    if (input) setHeaderCheckboxStatus(input, "update");
+                  }}
+                />
+                <label htmlFor="update">Update</label>
+              </div>
+              <div className="table-cell text-left border-collapse border-b-2 border-slate-100">
+                <input
+                  type="checkbox"
+                  className="h-4 w-4 mr-2 accent-indigo-600"
+                  onChange={(e) => checkAllHandler(e, permissions, "remove")}
+                  id="remove"
+                  ref={(input) => {
+                    if (input) setHeaderCheckboxStatus(input, "remove");
+                  }}
+                />
+                <label htmlFor="remove">Remove</label>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="table-row-group">
-          {pLoading || !permissions ? (
-            <div className="table-row">Loading..</div>
-          ) : (
-            formatPermissions(permissions).map((perm) => (
+          <div className="table-row-group">
+            {formatPermissions(permissions).map((perm) => (
               <div key={perm.name} className="table-row">
                 <div className="table-cell text-center capitalize p-1 border-collapse border-b-2 border-slate-100">
                   {perm.name}
@@ -248,7 +287,7 @@ function Role() {
                       id={permission._id}
                       name={permission._id}
                       checked={
-                        selectedRole.permissions?.findIndex(
+                        selectedRole.permissions.findIndex(
                           (p) => p._id === permission._id
                         ) !== -1
                       }
@@ -257,10 +296,10 @@ function Role() {
                   </div>
                 ))}
               </div>
-            ))
-          )}
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
