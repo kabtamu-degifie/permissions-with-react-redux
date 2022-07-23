@@ -185,8 +185,6 @@ function Role() {
     dispatch(fetchRoles());
   };
 
-  console.log(selectedRole);
-
   return (
     <div className="flex flex-col gap-3  w-full ml-12 mr-12 content-start border-gray-200 border-2 p-3 rounded-lg">
       <div className="border-gray-200 border-2 p-3 rounded-lg bg-slate-100 h-16">
