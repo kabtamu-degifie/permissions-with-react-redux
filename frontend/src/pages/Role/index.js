@@ -12,6 +12,7 @@ function Role() {
   const [selectedRole, setSelectedRole] = useState("");
 
   const dispatch = useDispatch();
+
   const {
     permissions,
     isSuccess: pSuccess,
@@ -33,8 +34,6 @@ function Role() {
       permissions: perms.filter((perm) => perm.name.includes(name)),
     }));
   };
-
-  // console.log(formatPermissions(permissions));
 
   // first time effect
   useEffect(() => {
@@ -66,70 +65,89 @@ function Role() {
 
   // check All
   const checkAllHandler = (e, perms, permType) => {
-    const viewPerm = perms.filter((p) => p.name.includes(permType));
+    // permType: view, create, update, remove
+    const permPerType = perms.filter((p) => p.name.includes(permType));
+    const selectedRolePerms = [...selectedRole.permissions];
     if (e.target.checked) {
-      const selectedRolePerms = [...selectedRole.permissions];
-      for (let p of viewPerm) {
+      for (let p of permPerType) {
         const index = selectedRolePerms.findIndex((srp) => srp._id === p._id);
         if (index === -1) {
           selectedRolePerms.push(p);
+          // check view to include
+          if (permType !== "view") {
+            perms.forEach((p) => {
+              if (p.name.includes("view")) {
+                const pIndex = selectedRolePerms.findIndex(
+                  (sp) => sp._id === p._id
+                );
+                if (pIndex === -1) {
+                  selectedRolePerms.push(p);
+                }
+              }
+            });
+          }
         }
       }
-      setSelectedRole((prev) => ({
-        name: prev.name,
-        permissions: selectedRolePerms,
-      }));
     } else {
-      const selectedRolePerms = [...selectedRole.permissions];
-      for (let p of viewPerm) {
+      for (let p of permPerType) {
         const index = selectedRolePerms.findIndex((srp) => srp._id === p._id);
         if (index !== -1) {
-          selectedRolePerms.splice(index, 1);
+          if (permType === "view") {
+            perms.forEach((p) => {
+              const pIndex = selectedRolePerms.findIndex(
+                (sp) => sp._id === p._id
+              );
+              if (pIndex !== -1) {
+                selectedRolePerms.splice(pIndex, 1);
+              }
+            });
+          } else {
+            selectedRolePerms.splice(index, 1);
+          }
         }
       }
-      setSelectedRole((prev) => ({
-        name: prev.name,
-        permissions: selectedRolePerms,
-      }));
     }
+    setSelectedRole((prev) => ({
+      name: prev.name,
+      permissions: selectedRolePerms,
+    }));
   };
 
   // check Single
   const checkIndividual = (e, permission, perm) => {
-    const clonedPermissions = [...selectedRole.permissions];
+    const selectedRolePerms = [...selectedRole.permissions];
 
-    const index = clonedPermissions.findIndex((p) => p._id === permission._id);
+    const index = selectedRolePerms.findIndex((p) => p._id === permission._id);
     const viewName = `view_${perm.name}`;
 
     if (index === -1 && e.target.checked) {
-      clonedPermissions.push(permission);
+      selectedRolePerms.push(permission);
       if (permission.name !== viewName) {
         // check if view_name is included
         // check in role
-        const vIndex = clonedPermissions.findIndex((p) => p.name === viewName);
+        const vIndex = selectedRolePerms.findIndex((p) => p.name === viewName);
 
         if (vIndex === -1) {
           // check in permissions
           const pIndex = perm.permissions.findIndex((p) => p.name === viewName);
           if (pIndex !== 1) {
-            clonedPermissions.push(perm.permissions[pIndex]);
+            selectedRolePerms.push(perm.permissions[pIndex]);
           }
         }
       }
     } else {
       if (permission.name === viewName) {
         perm.permissions.forEach((p) => {
-          const icp = clonedPermissions.findIndex((cp) => cp._id === p._id);
+          const icp = selectedRolePerms.findIndex((cp) => cp._id === p._id);
           if (icp !== -1) {
-            clonedPermissions.splice(icp, 1);
+            selectedRolePerms.splice(icp, 1);
           }
         });
       } else {
-        clonedPermissions.splice(index, 1);
+        selectedRolePerms.splice(index, 1);
       }
     }
-
-    setSelectedRole((prv) => ({ ...prv, permissions: clonedPermissions }));
+    setSelectedRole((prv) => ({ ...prv, permissions: selectedRolePerms }));
   };
 
   return (
