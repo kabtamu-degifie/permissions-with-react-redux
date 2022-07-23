@@ -62,6 +62,7 @@ function Role() {
     setSelectedRoleId(e.target.value);
   };
 
+  // check All
   const checkAllHandler = (e, perms, permType) => {
     const viewPerm = perms.filter((p) => p.name.includes(permType));
     if (e.target.checked) {
@@ -91,7 +92,26 @@ function Role() {
     }
   };
 
-  // console.log(selectedRole);z
+  // check Single
+  const checkIndividual = (e, permission) => {
+    const clonedPermissions = [...selectedRole.permissions];
+
+    const index = selectedRole.permissions?.findIndex(
+      (p) => p._id === permission._id
+    );
+    if (index === -1 && e.target.checked) {
+      clonedPermissions.push(permission);
+    } else {
+      clonedPermissions.splice(index, 1);
+    }
+    const updatedRole = {
+      ...selectedRole,
+      permissions: clonedPermissions,
+    };
+    setSelectedRole(updatedRole);
+  };
+
+  // console.log(selectedRole);
 
   return (
     <div className="flex flex-col gap-3  w-full ml-12 mr-12 content-start border-gray-200 border-2 p-3 rounded-lg">
@@ -190,31 +210,11 @@ function Role() {
                         id={permission._id}
                         name={permission._id}
                         checked={
-                          selectedRole?.permissions?.findIndex(
+                          selectedRole.permissions?.findIndex(
                             (p) => p._id === permission._id
                           ) !== -1
                         }
-                        onChange={(e) => {
-                          if (selectedRole) {
-                            const clonedPermissions = [
-                              ...selectedRole.permissions,
-                            ];
-
-                            const index = selectedRole?.permissions?.findIndex(
-                              (p) => p._id === permission._id
-                            );
-                            if (index === -1 && e.target.checked) {
-                              clonedPermissions.push(permission);
-                            } else {
-                              clonedPermissions.splice(index, 1);
-                            }
-                            const updatedRole = {
-                              ...selectedRole,
-                              permissions: clonedPermissions,
-                            };
-                            setSelectedRole(updatedRole);
-                          }
-                        }}
+                        onChange={(e) => checkIndividual(e, permission)}
                       />
                     </td>
                   ))}
