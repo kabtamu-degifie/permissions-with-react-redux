@@ -20,10 +20,10 @@ const create = async (role) => {
 };
 
 // fetch role/s
-const update = async (role) => {
+const update = async (params) => {
   const token = localStorage.getItem("token");
   http.setHeaders(token);
-  const response = await http.put(API_URL, role);
+  const response = await http.put(API_URL + "/" + params.id, params.role);
   return response.data;
 };
 

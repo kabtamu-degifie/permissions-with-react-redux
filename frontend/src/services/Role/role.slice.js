@@ -138,14 +138,12 @@ const slice = createSlice({
         state.isSuccess = true;
         state.isError = false;
         state.message = null;
-        state.roles = action.payload;
       })
       .addCase(update.rejected, (state, action) => {
         state.isLoading = false;
         state.isSuccess = false;
         state.isError = true;
         state.message = action.payload;
-        state.roles = null;
       })
 
       .addCase(remove.pending, (state) => {

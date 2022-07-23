@@ -29,8 +29,8 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
   const { id } = req.params;
-  const validation = validateRole({ ...req.body, id });
-  if (validation.error) return res.send(validation.error.details[0].message);
+  // const validation = validateRole({ ...req.body, id });
+  // if (validation.error) return res.send(validation.error.details[0].message);
 
   let role = await Role.findById(id);
   if (!role) return res.status(404).send("Role is not found");
@@ -58,7 +58,7 @@ const update = async (req, res) => {
       new: true,
     }
   );
-
+  console.log(role);
   res.status(200).send(role);
 };
 

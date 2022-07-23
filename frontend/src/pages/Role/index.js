@@ -8,6 +8,7 @@ import {
 import {
   fetch as fetchRoles,
   reset as rReset,
+  update as updateRole,
 } from "../../services/Role/role.slice";
 
 function Role() {
@@ -27,7 +28,7 @@ function Role() {
     isLoading: rLoading,
   } = useSelector((state) => state.roles);
 
-  // format: permissions
+  // Format: permissions
   const formatPermissions = (perms) => {
     // extract permission name => split name by _ => add to Set => back to Array => return {name, permission}
     return Array.from(
@@ -38,13 +39,13 @@ function Role() {
     }));
   };
 
-  // first time effect
+  // did mount effect
   useEffect(() => {
     dispatch(fetchPermissions());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // // dispatcher effect
+  // dispatcher effect
   useEffect(() => {
     dispatch(fetchRoles());
   }, [dispatch]);
@@ -65,12 +66,12 @@ function Role() {
     }
   }, [dispatch, pSuccess, permissions, rSuccess, roles, selectedRoleId]);
 
-  // select role
+  // Set selected role id
   const selectRoleHandler = (e) => {
     setSelectedRoleId(e.target.value);
   };
 
-  // check All
+  // Select all: for selected type of permission
   const checkAllHandler = (e, perms, permType) => {
     // permType: view, create, update, remove
     const permPerType = perms.filter((p) => p.name.includes(permType));
@@ -120,31 +121,32 @@ function Role() {
     }));
   };
 
-  // check Single
-  const checkIndividual = (e, permission, perm) => {
+  // Select one: for single permission
+  const checkIndividual = (e, permission, perms) => {
     const selectedRolePerms = [...selectedRole.permissions];
 
     const index = selectedRolePerms.findIndex((p) => p._id === permission._id);
-    const viewName = `view_${perm.name}`;
+    const viewName = `view_${perms.name}`;
 
     if (index === -1 && e.target.checked) {
       selectedRolePerms.push(permission);
       if (permission.name !== viewName) {
-        // check if view_name is included
-        // check in role
+        // check if permission is included in role permissions
         const vIndex = selectedRolePerms.findIndex((p) => p.name === viewName);
 
         if (vIndex === -1) {
-          // check in permissions
-          const pIndex = perm.permissions.findIndex((p) => p.name === viewName);
+          // check in all permissions from db
+          const pIndex = perms.permissions.findIndex(
+            (p) => p.name === viewName
+          );
           if (pIndex !== 1) {
-            selectedRolePerms.push(perm.permissions[pIndex]);
+            selectedRolePerms.push(perms.permissions[pIndex]);
           }
         }
       }
     } else {
       if (permission.name === viewName) {
-        perm.permissions.forEach((p) => {
+        perms.permissions.forEach((p) => {
           const icp = selectedRolePerms.findIndex((cp) => cp._id === p._id);
           if (icp !== -1) {
             selectedRolePerms.splice(icp, 1);
@@ -157,7 +159,7 @@ function Role() {
     setSelectedRole((prv) => ({ ...prv, permissions: selectedRolePerms }));
   };
 
-  // set select all permissions checkbox
+  // Set select all permissions checkbox status
   const setHeaderCheckboxStatus = (inputRef, permType) => {
     const srp = selectedRole.permissions.filter((sp) =>
       sp.name.includes(permType)
@@ -173,6 +175,18 @@ function Role() {
       inputRef.checked = false;
       inputRef.indeterminate = false;
     }
+  };
+
+  const handleSubmit = () => {
+    dispatch(
+      updateRole({
+        id: selectedRoleId,
+        role: {
+          ...selectedRole,
+        },
+      })
+    );
+    dispatch(fetchRoles());
   };
 
   return (
@@ -198,7 +212,14 @@ function Role() {
             </div>
           )}
 
-          <div>
+          <div className="flex gap-6">
+            <button
+              onClick={handleSubmit}
+              type="button"
+              className="inline-flex items-center  text-white bg-green-500 hover:bg-green-700 p-2 pr-4 pl-4 rounded-md"
+            >
+              Save Changes
+            </button>
             <button
               type="button"
               className="inline-flex items-center  text-white bg-indigo-600 hover:bg-indigo-700 p-2 pr-4 pl-4 rounded-md"
