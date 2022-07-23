@@ -143,7 +143,7 @@ function Role() {
               <select
                 onChange={selectRoleHandler}
                 value={selectedRoleId}
-                className="w-auto bg-white border-gray-200 border-2 p-2 pr-4 pl-4 rounded-md"
+                className="capitalize w-auto bg-white border-gray-200 border-2 p-2 pr-4 pl-4 rounded-md"
               >
                 {roles.map((role) => (
                   <option key={role._id} value={role._id}>
@@ -151,7 +151,7 @@ function Role() {
                   </option>
                 ))}
               </select>
-              <div>{selectedRole.name}</div>
+              <div className="capitalize">{selectedRole.name}</div>
             </div>
             <div>
               <button
@@ -166,82 +166,82 @@ function Role() {
         )}
       </div>
 
-      <div className="border-gray-200 border-2 p-3 rounded-lg">
-        <table className="w-full">
-          <thead>
-            <tr>
-              <th className="text-center">Module</th>
-              <th className="text-start">
-                <input
-                  type="checkbox"
-                  className="h-4 w-4 mr-2 accent-indigo-600"
-                  onChange={(e) => checkAllHandler(e, permissions, "view")}
-                  id="view"
-                />
-                <label htmlFor="view">View</label>
-              </th>
-
-              <th className="text-start">
-                <input
-                  type="checkbox"
-                  className="h-4 w-4 mr-2 accent-indigo-600"
-                  onChange={(e) => checkAllHandler(e, permissions, "create")}
-                  id="create"
-                />
-                <label htmlFor="create">Create</label>
-              </th>
-              <th className="text-start">
-                <input
-                  type="checkbox"
-                  className="h-4 w-4 mr-2 accent-indigo-600"
-                  onChange={(e) => checkAllHandler(e, permissions, "update")}
-                  id="update"
-                />
-                <label htmlFor="update">Update</label>
-              </th>
-              <th className="text-start">
-                <input
-                  type="checkbox"
-                  className="h-4 w-4 mr-2 accent-indigo-600"
-                  onChange={(e) => checkAllHandler(e, permissions, "remove")}
-                  id="remove"
-                />
-                <label htmlFor="remove">Remove</label>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {pLoading || !permissions ? (
-              <tr>
-                <td>
-                  <p>Loading...</p>
-                </td>
-              </tr>
-            ) : (
-              formatPermissions(permissions).map((perm) => (
-                <tr key={perm.name} className="mb-2 mt-2 text-center">
-                  <td>{perm.name}</td>
-                  {perm.permissions.map((permission) => (
-                    <td key={permission._id} className="text-start">
-                      <input
-                        className="h-4 w-4 accent-indigo-600"
-                        type="checkbox"
-                        id={permission._id}
-                        name={permission._id}
-                        checked={
-                          selectedRole.permissions?.findIndex(
-                            (p) => p._id === permission._id
-                          ) !== -1
-                        }
-                        onChange={(e) => checkIndividual(e, permission, perm)}
-                      />
-                    </td>
-                  ))}
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+      <div className="table w-full border-spacing-y-4 p-3 border-2 border-slate-200 rounded-lg">
+        <div className="table-header-group ">
+          <div className="table-row">
+            <div className="table-cell p-2 text-center border-collapse border-b-2 border-slate-100">
+              Module
+            </div>
+            <div className="table-cell text-left border-collapse border-b-2 border-slate-100">
+              <input
+                type="checkbox"
+                className="h-4 w-4 mr-2 accent-indigo-600"
+                onChange={(e) => checkAllHandler(e, permissions, "view")}
+                id="view"
+              />
+              <label htmlFor="view">View</label>
+            </div>
+            <div className="table-cell text-left border-collapse border-b-2 border-slate-100">
+              <input
+                type="checkbox"
+                className="h-4 w-4 mr-2 accent-indigo-600"
+                onChange={(e) => checkAllHandler(e, permissions, "create")}
+                id="create"
+              />
+              <label htmlFor="create">Create</label>
+            </div>
+            <div className="table-cell text-left border-collapse border-b-2 border-slate-100">
+              <input
+                type="checkbox"
+                className="h-4 w-4 mr-2 accent-indigo-600"
+                onChange={(e) => checkAllHandler(e, permissions, "update")}
+                id="update"
+              />
+              <label htmlFor="update">Update</label>
+            </div>
+            <div className="table-cell text-left border-collapse border-b-2 border-slate-100">
+              <input
+                type="checkbox"
+                className="h-4 w-4 mr-2 accent-indigo-600"
+                onChange={(e) => checkAllHandler(e, permissions, "remove")}
+                id="remove"
+              />
+              <label htmlFor="remove">Remove</label>
+            </div>
+          </div>
+        </div>
+        <div className="table-row-group">
+          {pLoading || !permissions ? (
+            <div className="table-row">Loading..</div>
+          ) : (
+            formatPermissions(permissions).map((perm) => (
+              <div key={perm.name} className="table-row">
+                <div className="table-cell text-center capitalize p-1 border-collapse border-b-2 border-slate-100">
+                  {perm.name}
+                </div>
+                {perm.permissions.map((permission) => (
+                  <div
+                    key={permission._id}
+                    className="table-cell border-collapse border-b-2 border-slate-100"
+                  >
+                    <input
+                      className="h-4 w-4 accent-indigo-600"
+                      type="checkbox"
+                      id={permission._id}
+                      name={permission._id}
+                      checked={
+                        selectedRole.permissions?.findIndex(
+                          (p) => p._id === permission._id
+                        ) !== -1
+                      }
+                      onChange={(e) => checkIndividual(e, permission, perm)}
+                    />
+                  </div>
+                ))}
+              </div>
+            ))
+          )}
+        </div>
       </div>
     </div>
   );
