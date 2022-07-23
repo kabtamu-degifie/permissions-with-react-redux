@@ -34,6 +34,8 @@ function Role() {
     }));
   };
 
+  // console.log(formatPermissions(permissions));
+
   // first time effect
   useEffect(() => {
     dispatch(fetchPermissions());
@@ -93,25 +95,42 @@ function Role() {
   };
 
   // check Single
-  const checkIndividual = (e, permission) => {
+  const checkIndividual = (e, permission, perm) => {
     const clonedPermissions = [...selectedRole.permissions];
 
-    const index = selectedRole.permissions?.findIndex(
-      (p) => p._id === permission._id
-    );
+    const index = clonedPermissions.findIndex((p) => p._id === permission._id);
+    const viewName = `view_${perm.name}`;
+
     if (index === -1 && e.target.checked) {
       clonedPermissions.push(permission);
-    } else {
-      clonedPermissions.splice(index, 1);
-    }
-    const updatedRole = {
-      ...selectedRole,
-      permissions: clonedPermissions,
-    };
-    setSelectedRole(updatedRole);
-  };
+      if (permission.name !== viewName) {
+        // check if view_name is included
+        // check in role
+        const vIndex = clonedPermissions.findIndex((p) => p.name === viewName);
 
-  // console.log(selectedRole);
+        if (vIndex === -1) {
+          // check in permissions
+          const pIndex = perm.permissions.findIndex((p) => p.name === viewName);
+          if (pIndex !== 1) {
+            clonedPermissions.push(perm.permissions[pIndex]);
+          }
+        }
+      }
+    } else {
+      if (permission.name === viewName) {
+        perm.permissions.forEach((p) => {
+          const icp = clonedPermissions.findIndex((cp) => cp._id === p._id);
+          if (icp !== -1) {
+            clonedPermissions.splice(icp, 1);
+          }
+        });
+      } else {
+        clonedPermissions.splice(index, 1);
+      }
+    }
+
+    setSelectedRole((prv) => ({ ...prv, permissions: clonedPermissions }));
+  };
 
   return (
     <div className="flex flex-col gap-3  w-full ml-12 mr-12 content-start border-gray-200 border-2 p-3 rounded-lg">
@@ -214,7 +233,7 @@ function Role() {
                             (p) => p._id === permission._id
                           ) !== -1
                         }
-                        onChange={(e) => checkIndividual(e, permission)}
+                        onChange={(e) => checkIndividual(e, permission, perm)}
                       />
                     </td>
                   ))}
