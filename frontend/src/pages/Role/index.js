@@ -42,13 +42,9 @@ function Role() {
   // did mount effect
   useEffect(() => {
     dispatch(fetchPermissions());
+    dispatch(fetchRoles());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // dispatcher effect
-  useEffect(() => {
-    dispatch(fetchRoles());
-  }, [dispatch]);
 
   // state effect
   useEffect(() => {
@@ -177,7 +173,7 @@ function Role() {
     }
   };
 
-  const handleSubmit = () => {
+  const handleRoleUpdate = () => {
     dispatch(
       updateRole({
         id: selectedRoleId,
@@ -188,6 +184,8 @@ function Role() {
     );
     dispatch(fetchRoles());
   };
+
+  console.log(selectedRole);
 
   return (
     <div className="flex flex-col gap-3  w-full ml-12 mr-12 content-start border-gray-200 border-2 p-3 rounded-lg">
@@ -214,7 +212,7 @@ function Role() {
 
           <div className="flex gap-6">
             <button
-              onClick={handleSubmit}
+              onClick={handleRoleUpdate}
               type="button"
               className="inline-flex items-center  text-white bg-green-500 hover:bg-green-700 p-2 pr-4 pl-4 rounded-md"
             >

@@ -58,7 +58,6 @@ const update = async (req, res) => {
       new: true,
     }
   );
-  console.log(role);
   res.status(200).send(role);
 };
 
