@@ -1,5 +1,4 @@
 import http from "../../libs/axios";
-import jwtDecoder from "jwt-decode";
 
 // API
 const USER_API_URL = "/v1/users";
@@ -16,8 +15,7 @@ const login = async (userData) => {
   const response = await http.post(AUTH_API_URL, userData);
   if (response.data?.token) {
     localStorage.setItem("token", response.data.token);
-    const decodedData = jwtDecoder(response.data.token);
-    localStorage.setItem("user", JSON.stringify(decodedData));
+    window.location = "/";
     return response.data;
   }
 };
