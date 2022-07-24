@@ -15,14 +15,19 @@ const login = async (userData) => {
   const response = await http.post(AUTH_API_URL, userData);
   if (response.data?.token) {
     localStorage.setItem("token", response.data.token);
-    window.location = "/";
     return response.data;
   }
+};
+
+// logout
+const logout = () => {
+  localStorage.removeItem("token");
 };
 
 const userService = {
   register,
   login,
+  logout,
 };
 
 export default userService;
