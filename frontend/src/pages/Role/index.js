@@ -18,22 +18,23 @@ function Role() {
   );
   const {
     roles,
-    isSuccess: rSuccess,
+    isSuccess: roleSuccess,
     isLoading: roleLoading,
   } = useSelector((state) => state.roles);
 
+  // did mount effect
   useEffect(() => {
     dispatch(fetchPermissions());
   }, []);
 
-  // did mount effect
+  // dispatch + did mount effect
   useEffect(() => {
     dispatch(fetchRoles());
   }, [dispatch]);
 
-  // state effect
+  // state + did mount effect
   useEffect(() => {
-    if (rSuccess || roles) {
+    if (roleSuccess || roles) {
       if (selectedRoleId) {
         const role = roles.find((role) => role._id === selectedRoleId);
         setSelectedRole(role);
@@ -41,7 +42,7 @@ function Role() {
         setSelectedRoleId(roles[0]._id);
       }
     }
-  }, [roles, rSuccess, selectedRoleId]);
+  }, [roles, roleSuccess, selectedRoleId]);
 
   // Set selected role id
   const selectRoleHandler = (e) => {
