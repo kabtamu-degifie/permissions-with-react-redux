@@ -10,9 +10,6 @@ const permissions = [
   "remove_role",
 
   "view_permission",
-  "create_permission",
-  "update_permission",
-  "remove_permission",
 ];
 
 const roles = {

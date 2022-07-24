@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { MdAdd } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetch as fetchPermissions,
-  reset as pReset,
-} from "../../services/Permission/permission.slice";
+import { fetch as fetchPermissions } from "../../services/Permission/permission.slice";
 import {
   fetch as fetchRoles,
-  reset as rReset,
   update as updateRole,
 } from "../../services/Role/role.slice";
 
@@ -17,16 +13,42 @@ function Role() {
 
   const dispatch = useDispatch();
 
-  const {
-    permissions,
-    isSuccess: pSuccess,
-    isLoading: pLoading,
-  } = useSelector((state) => state.permissions);
+  const { permissions, isLoading: pLoading } = useSelector(
+    (state) => state.permissions
+  );
   const {
     roles,
     isSuccess: rSuccess,
     isLoading: rLoading,
+    message: rMessage,
   } = useSelector((state) => state.roles);
+
+  useEffect(() => {
+    dispatch(fetchPermissions());
+  }, []);
+
+  // did mount effect
+  useEffect(() => {
+    dispatch(fetchRoles());
+  }, [dispatch]);
+
+  // state effect
+  useEffect(() => {
+    if (rSuccess || roles) {
+      if (selectedRoleId) {
+        const role = roles.find((role) => role._id === selectedRoleId);
+        setSelectedRole(role);
+      } else {
+        setSelectedRoleId(roles[0]._id);
+      }
+    }
+  }, [roles, rSuccess, selectedRoleId]);
+
+  // Set selected role id
+  const selectRoleHandler = (e) => {
+    setSelectedRoleId(e.target.value);
+    dispatch(fetchRoles());
+  };
 
   // Format: permissions
   const formatPermissions = (perms) => {
@@ -37,34 +59,6 @@ function Role() {
       name,
       permissions: perms.filter((perm) => perm.name.includes(name)),
     }));
-  };
-
-  // did mount effect
-  useEffect(() => {
-    dispatch(fetchPermissions());
-    dispatch(fetchRoles());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // state effect
-  useEffect(() => {
-    if (rSuccess || roles) {
-      if (selectedRoleId) {
-        setSelectedRole(roles.find((role) => role._id === selectedRoleId));
-      } else {
-        setSelectedRoleId(roles[0]._id);
-      }
-      dispatch(rReset());
-    }
-
-    if (pSuccess || permissions) {
-      dispatch(pReset());
-    }
-  }, [dispatch, pSuccess, permissions, rSuccess, roles, selectedRoleId]);
-
-  // Set selected role id
-  const selectRoleHandler = (e) => {
-    setSelectedRoleId(e.target.value);
   };
 
   // Select all: for selected type of permission
@@ -111,10 +105,7 @@ function Role() {
         }
       }
     }
-    setSelectedRole((prev) => ({
-      name: prev.name,
-      permissions: selectedRolePerms,
-    }));
+    setSelectedRole((prev) => ({ ...prev, permissions: selectedRolePerms }));
   };
 
   // Select one: for single permission
@@ -182,7 +173,6 @@ function Role() {
         },
       })
     );
-    dispatch(fetchRoles());
   };
 
   return (
