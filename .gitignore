@@ -1,7 +1,6 @@
 # .env
 
 # folders
-public/
 /.vscode
 node_modules
 
