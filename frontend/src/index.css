@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.btn-success {
+  @apply inline-flex items-center  text-white bg-green-500 hover:bg-green-700 p-2 pr-4 pl-4 rounded-md;
+}
+
+.btn-success-outline {
+  @apply inline-flex items-center  text-indigo-600 border-indigo-500 hover:border-indigo-700 border-2 p-2 pr-4 pl-4 rounded-md;
+}
+
+.table-cell-center {
+  @apply table-cell p-2 text-center border-collapse border-b-2 border-slate-100;
+}
+
+.table-cell-left {
+  @apply table-cell text-left border-collapse border-b-2 border-slate-100;
+}
+
+.role-selector {
+  @apply capitalize w-auto bg-white border-gray-200 border-2 p-2 pr-4 pl-4 rounded-md;
+}

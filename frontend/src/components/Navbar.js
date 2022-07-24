@@ -8,9 +8,9 @@ import { useLocation } from "react-router-dom";
 const NavBar = () => {
   const location = useLocation();
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6">
-      <div className="flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10">
-        <div className="flex justify-start lg:w-0 lg:flex-1">
+    <div className="max-w-7xl mx-auto px-5">
+      <div className="flex justify-between items-center border-b-2 border-gray-100 py-6">
+        <div className="flex justify-start ">
           <NavLink
             to="/"
             className="whitespace-nowrap inline-flex items-center text-2xl text-gray-500 hover:text-gray-900"
@@ -31,7 +31,7 @@ const NavBar = () => {
           </NavLink>
         </div>
 
-        <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0 ">
+        <div className="flex items-center justify-end ">
           <NavLink
             to="/login"
             className={`${
