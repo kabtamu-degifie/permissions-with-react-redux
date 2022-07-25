@@ -74,6 +74,7 @@ function Login() {
             name="password"
             label="Password"
             placeholder="Password"
+            autoComplete="on"
           />
 
           <button

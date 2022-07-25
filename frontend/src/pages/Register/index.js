@@ -79,6 +79,7 @@ function Register() {
             name="password"
             label="Password"
             placeholder="Password"
+            autoComplete="on"
           />
 
           <Textbox
@@ -86,6 +87,7 @@ function Register() {
             name="repeatPassword"
             label="Repeat Password"
             placeholder="Repeat Password"
+            autoComplete="on"
           />
           <button
             type="submit"
