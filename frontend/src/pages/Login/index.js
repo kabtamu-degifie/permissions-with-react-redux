@@ -3,13 +3,14 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import Textbox from "../../components/form/Textbox";
 import { FaSignInAlt } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login, reset } from "../../services/Auth/user.slice";
 
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const initialValues = {
     email: "",
     password: "",
@@ -32,9 +33,18 @@ function Login() {
   useEffect(() => {
     if (isSuccess && user) {
       dispatch(reset());
-      navigate("/");
+      navigate(location.state ? location.state : "/");
     }
-  }, [user, isLoading, isSuccess, isError, message, navigate, dispatch]);
+  }, [
+    user,
+    location,
+    isLoading,
+    isSuccess,
+    isError,
+    message,
+    navigate,
+    dispatch,
+  ]);
 
   return (
     <Formik
