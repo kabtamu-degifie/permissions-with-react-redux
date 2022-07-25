@@ -9,7 +9,6 @@ const initialState = {
   message: "",
 };
 
-// fetch permission/s
 export const fetch = createAsyncThunk(
   "permission/fetch",
   async (params, thunkAPI) => {

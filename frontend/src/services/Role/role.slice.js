@@ -9,7 +9,6 @@ const initialState = {
   message: "",
 };
 
-// fetch
 export const fetch = createAsyncThunk(
   "role/fetch",
   async (params, thunkAPI) => {
@@ -27,7 +26,6 @@ export const fetch = createAsyncThunk(
   }
 );
 
-// create
 export const create = createAsyncThunk(
   "role/create",
   async (role, thunkAPI) => {
@@ -45,7 +43,6 @@ export const create = createAsyncThunk(
   }
 );
 
-// update
 export const update = createAsyncThunk(
   "role/update",
   async (params, thunkAPI) => {
@@ -63,7 +60,6 @@ export const update = createAsyncThunk(
   }
 );
 
-// remove
 export const remove = createAsyncThunk(
   "role/remove",
   async (params, thunkAPI) => {
