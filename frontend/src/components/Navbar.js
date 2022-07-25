@@ -5,7 +5,7 @@ import { MdAppRegistration } from "react-icons/md";
 import { SiSpringsecurity } from "react-icons/si";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { logout } from "../services/Auth/user.slice";
+import { logout } from "../services/Auth/auth.slice";
 import { hasPermission, getLoggedInUser } from "../libs/local-storage";
 
 const NavBar = () => {

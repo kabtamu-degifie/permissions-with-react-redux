@@ -5,7 +5,7 @@ import Textbox from "../../components/form/Textbox";
 import { FaSignInAlt } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { login, reset } from "../../services/Auth/user.slice";
+import { login, reset } from "../../services/Auth/auth.slice";
 
 function Login() {
   const dispatch = useDispatch();
@@ -26,17 +26,17 @@ function Login() {
     dispatch(login({ email, password }));
   };
 
-  const { user, isLoading, isSuccess, isError, message } = useSelector(
-    (state) => state.user
+  const { token, isLoading, isSuccess, isError, message } = useSelector(
+    (state) => state.auth
   );
 
   useEffect(() => {
-    if (isSuccess && user) {
+    if (isSuccess && token) {
       dispatch(reset());
       navigate(location.state ? location.state : "/");
     }
   }, [
-    user,
+    token,
     location,
     isLoading,
     isSuccess,

@@ -5,7 +5,7 @@ import Textbox from "../../components/form/Textbox";
 import { FaUser } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { register, reset } from "../../services/Auth/user.slice";
+import { register, reset } from "../../services/User/user.slice";
 
 function Register() {
   const dispatch = useDispatch();
