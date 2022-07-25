@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 .btn-success {
-  @apply inline-flex items-center  text-white bg-green-500 hover:bg-green-700 p-2 pr-4 pl-4 rounded-md;
+  @apply inline-flex items-center  text-white bg-green-500 hover:bg-green-700 py-1 px-3 shadow-lg shadow-green-300 rounded-md;
 }
 
 .btn-success-outline {
-  @apply inline-flex items-center  text-indigo-600 border-indigo-500 hover:border-indigo-700 border-2 p-2 pr-4 pl-4 rounded-md;
+  @apply inline-flex items-center  text-indigo-600 border-indigo-500 hover:border-indigo-700 shadow-lg shadow-indigo-300 border-2 py-1 px-3 rounded-md;
 }
 
 .table-cell-center {
