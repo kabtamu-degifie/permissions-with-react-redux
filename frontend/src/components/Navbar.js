@@ -46,10 +46,18 @@ const NavBar = () => {
 
         <div className="flex items-center justify-end">
           {loggedInUser ? (
-            <button onClick={logoutUser} className="btn-success-outline">
-              <FaSignOutAlt className="mr-2" />
-              Logout
-            </button>
+            <>
+              <p className="p-2 ">
+                Logged in as
+                <span className="mx-2 font-semibold">
+                  {loggedInUser.username}
+                </span>
+              </p>
+              <button onClick={logoutUser} className="btn-success-outline">
+                <FaSignOutAlt className="mr-2" />
+                Logout
+              </button>
+            </>
           ) : (
             <>
               <NavLink
