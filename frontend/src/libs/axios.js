@@ -1,11 +1,4 @@
 import axios from "axios";
-import { getToken } from "./permission";
-const token = getToken();
-if (token) {
-  axios.defaults.headers.common["Authorization"] = `bearer ${token}`;
-} else {
-  delete axios.defaults.headers.common["Authorization"];
-}
 
 const setHeader = (token) => {
   if (token) {

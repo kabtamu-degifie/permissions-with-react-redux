@@ -6,7 +6,7 @@ import { SiSpringsecurity } from "react-icons/si";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../services/Auth/user.slice";
-import { hasPermission, getLoggedInUser } from "../libs/permission";
+import { hasPermission, getLoggedInUser } from "../libs/local-storage";
 
 const NavBar = () => {
   const location = useLocation();

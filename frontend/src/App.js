@@ -5,7 +5,6 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Role from "./pages/Role";
-import { hasPermission } from "./libs/permission";
 import ProtectedRoute from "./ProtectedRoute";
 
 function App() {

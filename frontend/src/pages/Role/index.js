@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { MdAdd } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { hasPermission } from "../../libs/permission";
+import { hasPermission } from "../../libs/local-storage";
 import { fetch as fetchPermissions } from "../../services/Permission/permission.slice";
 import {
   fetch as fetchRoles,

@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { getLoggedInUser, hasPermission } from "./libs/permission";
+import { getLoggedInUser, hasPermission } from "./libs/local-storage";
 
 function ProtectedRoute(props) {
   const location = useLocation();

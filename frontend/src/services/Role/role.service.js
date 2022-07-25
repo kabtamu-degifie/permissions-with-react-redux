@@ -1,5 +1,5 @@
 import http from "../../libs/axios";
-import { getToken } from "../../libs/permission";
+import { getToken } from "../../libs/local-storage";
 
 // API
 const API_URL = "/v1/roles";
