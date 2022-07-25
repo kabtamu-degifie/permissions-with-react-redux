@@ -3,7 +3,7 @@ import { FaSignInAlt, FaCriticalRole, FaSignOutAlt } from "react-icons/fa";
 
 import { MdAppRegistration } from "react-icons/md";
 import { SiSpringsecurity } from "react-icons/si";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../services/Auth/user.slice";
 import { hasPermission, getLoggedInUser } from "../libs/permission";
@@ -11,9 +11,11 @@ import { hasPermission, getLoggedInUser } from "../libs/permission";
 const NavBar = () => {
   const location = useLocation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const loggedInUser = getLoggedInUser();
   const logoutUser = () => {
     dispatch(logout());
+    navigate("/login");
   };
 
   return (
