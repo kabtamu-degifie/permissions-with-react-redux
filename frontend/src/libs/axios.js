@@ -1,12 +1,11 @@
 import axios from "axios";
-
-const setHeaders = (token) => {
-  if (token) {
-    axios.defaults.headers.common["Authorization"] = `bearer ${token}`;
-  } else {
-    delete axios.defaults.headers.common["Authorization"];
-  }
-};
+import { getToken } from "./permission";
+const token = getToken();
+if (token) {
+  axios.defaults.headers.common["Authorization"] = `bearer ${token}`;
+} else {
+  delete axios.defaults.headers.common["Authorization"];
+}
 
 axios.defaults.baseURL = "http://localhost:5000";
 
@@ -24,7 +23,6 @@ const http = {
   put: axios.put,
   patch: axios.patch,
   delete: axios.delete,
-  setHeaders,
 };
 
 export default http;

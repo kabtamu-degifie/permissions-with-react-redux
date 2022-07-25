@@ -1,10 +1,10 @@
 import jwtDecoder from "jwt-decode";
 
-function getToken() {
+export function getToken() {
   return localStorage.getItem("token");
 }
 
-function getDecodedToken() {
+export function getDecodedToken() {
   const token = getToken();
   if (!token) return false;
   const decode = jwtDecoder(token);

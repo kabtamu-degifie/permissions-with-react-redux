@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { MdAdd } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
+import { hasPermission } from "../../libs/permission";
 import { fetch as fetchPermissions } from "../../services/Permission/permission.slice";
 import {
   fetch as fetchRoles,
@@ -21,7 +22,6 @@ function Role() {
     isSuccess: roleSuccess,
     isLoading: roleLoading,
   } = useSelector((state) => state.roles);
-
   // did mount effect
   useEffect(() => {
     dispatch(fetchPermissions());
@@ -232,7 +232,11 @@ function Role() {
               return (
                 <div key={cell} className="table-cell-left">
                   <input
-                    disabled={roleLoading || permissionLoading}
+                    disabled={
+                      roleLoading ||
+                      permissionLoading ||
+                      !hasPermission("update_role")
+                    }
                     type="checkbox"
                     className="h-4 w-4 mr-2 accent-indigo-600"
                     onChange={(e) => checkAllHandler(e, cell)}
@@ -264,6 +268,7 @@ function Role() {
                     type="checkbox"
                     id={permission._id}
                     name={permission._id}
+                    disabled={roleLoading || !hasPermission("update_role")}
                     checked={roleHasPermission(permission._id)}
                     onChange={(e) => checkIndividual(e, permission, group)}
                   />
@@ -281,22 +286,26 @@ function Role() {
         <div className="flex justify-between">
           {rolesSection}
           <div className="flex gap-6">
-            <button
-              disabled={roleLoading}
-              onClick={handleRoleUpdate}
-              type="button"
-              className="btn-success-outline"
-            >
-              Save Changes
-            </button>
-            <button
-              disabled={roleLoading}
-              type="button"
-              className="btn-success"
-            >
-              <MdAdd className="mr-2" />
-              Add Role
-            </button>
+            {hasPermission("update_role") ? (
+              <button
+                disabled={roleLoading}
+                onClick={handleRoleUpdate}
+                type="button"
+                className="btn-success-outline"
+              >
+                Save Changes
+              </button>
+            ) : null}
+            {hasPermission("create_role") ? (
+              <button
+                disabled={roleLoading}
+                type="button"
+                className="btn-success"
+              >
+                <MdAdd className="mr-2" />
+                Add Role
+              </button>
+            ) : null}
           </div>
         </div>
       </div>

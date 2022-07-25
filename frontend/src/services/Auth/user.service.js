@@ -1,5 +1,4 @@
 import http from "../../libs/axios";
-
 // API
 const USER_API_URL = "/v1/users";
 const AUTH_API_URL = "/v1/auth";
@@ -15,6 +14,7 @@ const login = async (userData) => {
   const response = await http.post(AUTH_API_URL, userData);
   if (response.data?.token) {
     localStorage.setItem("token", response.data.token);
+    window.location = "/";
     return response.data;
   }
 };
@@ -22,7 +22,7 @@ const login = async (userData) => {
 // logout
 const logout = () => {
   localStorage.removeItem("token");
-  window.location = "/";
+  window.location = "/login";
 };
 
 const userService = {
