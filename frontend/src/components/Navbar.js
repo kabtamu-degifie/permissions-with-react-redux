@@ -6,11 +6,12 @@ import { SiSpringsecurity } from "react-icons/si";
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../services/Auth/user.slice";
-import { hasPermission, loggedInUser } from "../libs/permission";
+import { hasPermission, getLoggedInUser } from "../libs/permission";
 
 const NavBar = () => {
   const location = useLocation();
   const dispatch = useDispatch();
+  const loggedInUser = getLoggedInUser();
   const logoutUser = () => {
     dispatch(logout());
   };
@@ -42,7 +43,7 @@ const NavBar = () => {
         </div>
 
         <div className="flex items-center justify-end">
-          {loggedInUser() ? (
+          {loggedInUser ? (
             <button onClick={logoutUser} className="btn-success-outline">
               <FaSignOutAlt className="mr-2" />
               Logout
