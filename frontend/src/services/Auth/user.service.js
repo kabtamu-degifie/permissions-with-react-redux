@@ -22,6 +22,7 @@ const login = async (userData) => {
 // logout
 const logout = () => {
   localStorage.removeItem("token");
+  window.location = "/";
 };
 
 const userService = {
